@@ -192,29 +192,24 @@ def save_to_excel_c(df_sc, df_benefit, filename: str):
                     sc.write_datetime(r, c, val, date_fmt)
 
                 elif col_name in koma_cols:
-                    try:
-                        if pd.isna(val) or val in [0, "0", "", None]:
-                            sc.write(r, c, None, border_fmt)
-                        else:
-                            if isinstance(val, str):
-                                clean = val.replace("Rp", "").replace(",", "").strip()
-                                if clean == "":
-                                    sc.write(r, c, None, border_fmt)
-                                else:
-                                    sc.write_number(r, c, float(clean), num_fmt)
-                            else:
-                                try:
-
-                                    num = float(str(val).replace(",", ""))
-
-                                        sc.write_number(r, c, num, num_fmt)
-
-                                    except (ValueError, TypeError):
-
-                                 sc.write(r, c, val)
- 
-                    except Exception:
-                        sc.write_string(r, c, str(val))
+    try:
+        if pd.isna(val) or val in [0, "0", "", None]:
+            sc.write(r, c, None, border_fmt)
+        else:
+            if isinstance(val, str):
+                clean = val.replace("Rp", "").replace(",", "").strip()
+                if clean == "":
+                    sc.write(r, c, None, border_fmt)
+                else:
+                    sc.write_number(r, c, float(clean), num_fmt)
+            else:
+                try:
+                    num = float(str(val).replace(",", ""))
+                    sc.write_number(r, c, num, num_fmt)
+                except (ValueError, TypeError):
+                    sc.write(r, c, val, border_fmt)
+    except Exception:
+        sc.write_string(r, c, str(val))
 
                 elif col_name == "Emp ID":
                     sc.write(r, c, str(val) if pd.notna(val) else "", border_fmt)
