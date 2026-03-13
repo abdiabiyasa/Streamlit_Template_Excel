@@ -203,7 +203,16 @@ def save_to_excel_c(df_sc, df_benefit, filename: str):
                                 else:
                                     sc.write_number(r, c, float(clean), num_fmt)
                             else:
-                                sc.write_number(r, c, float(val), num_fmt)
+                                try:
+
+                                    num = float(str(val).replace(",", ""))
+
+                                        sc.write_number(r, c, num, num_fmt)
+
+                                    except (ValueError, TypeError):
+
+                                 sc.write(r, c, val)
+ 
                     except Exception:
                         sc.write_string(r, c, str(val))
 
